@@ -1,6 +1,0 @@
-#ifndef CLIB_SHARED_LIBRARY_H
-#define CLIB_SHARED_LIBRARY_H
-
-void hello();
-
-#endif //CLIB_SHARED_LIBRARY_H
