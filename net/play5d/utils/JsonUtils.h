@@ -18,13 +18,19 @@
 // Created by liush on 2026/4/5.
 //
 
-#ifndef NET_PLAY5D_UTILS_WSTRINGUTILS_H
-#define NET_PLAY5D_UTILS_WSTRINGUTILS_H
+#ifndef NET_PLAY5D_UTILS_JSONUTILS_H
+#define NET_PLAY5D_UTILS_JSONUTILS_H
+
+#ifndef JSON_RESOURCE_TYPE
+#define JSON_RESOURCE_TYPE L"JSON"
+#endif
+
 
 //////////////////////////////////////////////////
-
 // 头文件
-#include <string>
+
+#include <windows.h>
+#include "nlohmann/json.hpp"
 
 //////////////////////////////////////////////////
 
@@ -36,22 +42,21 @@
 namespace net::play5d::utils {
 
 /**
- * @brief 宽字符串工具类
+ * @brief JSON 工具类
  */
-class WStringUtils {
+class JsonUtils {
 public:
 
     /**
-     * @brief UTF-8 字符串转换为宽字符串
+     * @brief 从资源加载 JSON 字符串
      *
-     * @param str UTF-8 字符串
-     * @return 宽字符串
+     * @param hInstance 应用实例句柄
+     * @param resId 资源 ID
+     * @return JSON 字符串
      */
-    static std::wstring utf82wstring(const std::string &str);
+    static nlohmann::json loadJsonFromResource(HINSTANCE hInstance, int resId);
 
 };
 }
 
-//////////////////////////////////////////////////
-
-#endif //NET_PLAY5D_UTILS_WSTRINGUTILS_H
+#endif //NET_PLAY5D_UTILS_JSONUTILS_H

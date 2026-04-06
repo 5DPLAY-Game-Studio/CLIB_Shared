@@ -18,40 +18,54 @@
 // Created by liush on 2026/4/5.
 //
 
-#ifndef NET_PLAY5D_UTILS_WSTRINGUTILS_H
-#define NET_PLAY5D_UTILS_WSTRINGUTILS_H
-
 //////////////////////////////////////////////////
-
 // 头文件
-#include <string>
+
+#include "JsonUtils.h"
+
+//////////////////////////////////////////////////
+// 头文件
+
+
 
 //////////////////////////////////////////////////
 
 
 
 //////////////////////////////////////////////////
-// 类声明
-
-namespace net::play5d::utils {
+// 类实现
 
 /**
- * @brief 宽字符串工具类
- */
-class WStringUtils {
-public:
+ * @brief 从资源加载 JSON 字符串
+ *
+ * @param hInstance 应用实例句柄
+ * @param resId 资源 ID
+ * @return JSON 字符串
+  */
+nlohmann::json
+net::play5d::utils::JsonUtils::
+loadJsonFromResource(HINSTANCE hInstance, int resId) {
+    // 查找资源
+    HRSRC hRsrc = FindResourceW(hInstance, MAKEINTRESOURCEW(resId), JSON_RESOURCE_TYPE);
+    if (hRsrc == nullptr) {
+        return nullptr;
+    }
 
-    /**
-     * @brief UTF-8 字符串转换为宽字符串
-     *
-     * @param str UTF-8 字符串
-     * @return 宽字符串
-     */
-    static std::wstring utf82wstring(const std::string &str);
+    // 加载资源
+    HGLOBAL hResourceData = LoadResource(hInstance, hRsrc);
+    if (hResourceData == nullptr) {
+        return nullptr;
+    }
 
-};
+    // 获取资源大小
+    DWORD dwSize = SizeofResource(hInstance, hRsrc);
+    if (dwSize == 0) {
+        return nullptr;
+    }
+
+    // 锁定并解析资源
+    const char *pData = (const char *)LockResource(hResourceData);
+    return nlohmann::json::parse(pData, pData + dwSize);
 }
 
 //////////////////////////////////////////////////
-
-#endif //NET_PLAY5D_UTILS_WSTRINGUTILS_H
