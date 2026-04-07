@@ -24,11 +24,6 @@
 #include "JsonUtils.h"
 
 //////////////////////////////////////////////////
-// 头文件
-
-
-
-//////////////////////////////////////////////////
 
 
 
@@ -44,28 +39,40 @@
   */
 nlohmann::json
 net::play5d::utils::JsonUtils::
-loadJsonFromResource(HINSTANCE hInstance, int resId) {
+loadJsonFromResource(
+        HINSTANCE hInstance,
+        int resId
+) {
     // 查找资源
     HRSRC hRsrc = FindResourceW(hInstance, MAKEINTRESOURCEW(resId), JSON_RESOURCE_TYPE);
     if (hRsrc == nullptr) {
-        return nullptr;
+        return {};
     }
 
     // 加载资源
     HGLOBAL hResourceData = LoadResource(hInstance, hRsrc);
     if (hResourceData == nullptr) {
-        return nullptr;
+        return {};
     }
 
     // 获取资源大小
     DWORD dwSize = SizeofResource(hInstance, hRsrc);
     if (dwSize == 0) {
-        return nullptr;
+        return {};
     }
 
     // 锁定并解析资源
     const char *pData = (const char *)LockResource(hResourceData);
-    return nlohmann::json::parse(pData, pData + dwSize);
+    if (pData == nullptr) {
+        return {};
+    }
+
+    // 解析 JSON 字符串
+    try {
+        return nlohmann::json::parse(pData, pData + dwSize);
+    } catch (const nlohmann::json::parse_error& e) {
+        return {};
+    }
 }
 
 //////////////////////////////////////////////////

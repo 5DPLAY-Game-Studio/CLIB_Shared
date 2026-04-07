@@ -54,7 +54,12 @@ public:
      * @param resId 资源 ID
      * @return JSON 字符串
      */
-    static nlohmann::json loadJsonFromResource(HINSTANCE hInstance, int resId);
+    static
+    nlohmann::json
+    loadJsonFromResource(
+            HINSTANCE hInstance,
+            int resId
+    );
 
 };
 }
