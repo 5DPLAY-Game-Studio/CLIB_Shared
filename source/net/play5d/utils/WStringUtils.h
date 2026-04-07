@@ -22,8 +22,8 @@
 #define NET_PLAY5D_UTILS_WSTRINGUTILS_H
 
 //////////////////////////////////////////////////
-
 // 头文件
+
 #include <string>
 
 //////////////////////////////////////////////////
@@ -47,7 +47,11 @@ public:
      * @param str UTF-8 字符串
      * @return 宽字符串
      */
-    static std::wstring utf82wstring(const std::string &str);
+    static
+    std::wstring
+    utf82wstring(
+            const std::string &str
+    );
 
 };
 }

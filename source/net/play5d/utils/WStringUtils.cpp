@@ -21,8 +21,8 @@
 //////////////////////////////////////////////////
 // 头文件
 
-#include <windows.h>
 #include "WStringUtils.h"
+#include <windows.h>
 
 //////////////////////////////////////////////////
 
@@ -39,9 +39,15 @@
  */
 std::wstring
 net::play5d::utils::WStringUtils::
-utf82wstring(const std::string &str) {
+utf82wstring(
+        const std::string &str
+) {
     // 字符串是否为空
     if (str.empty()) {
+        return {};
+    }
+    // 字符串长度是否超过 INT_MAX
+    if (str.size() > INT_MAX) {
         return {};
     }
 
@@ -87,13 +93,13 @@ utf82wstring(const std::string &str) {
             // 传入显式长度，不依赖字符串结束符
             utf8ByteLen,
             // 输出数据指针
-            &result[0],
+            result.data(),
             // 输出数据长度
             requiredWCharLen
     );
 
-    // 检查转换是否成功，长度 != 0 说明转换成功
-    if (convertedChars != requiredWCharLen) {
+    // 检查转换是否成功，长度 <= 0 说明转换失败
+    if (convertedChars <= 0) {
         return {};
     }
 
